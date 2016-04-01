@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
 
 RUN apt-get -y install git curl wget \
-	mysql-client mysql-server apache2 libapache2-mod-php5 \
+	mariadb-client mariadb-server apache2 libapache2-mod-php5 \
 	python-setuptools memcached php5-memcache \
 	php5-cli php5-mysql php-apc php5-gd php5-curl php5-xdebug; \
 	apt-get clean; \
@@ -21,10 +21,7 @@ RUN HOME=/ /usr/local/bin/composer global require drush/drush:dev-master; \
   HOME=/ /usr/local/bin/composer require "potsky/pimp-my-log"
 RUN HOME=/ /usr/local/bin/composer global require drush/drush:dev-master
 
-#Apache & Xdebug
-RUN rm /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/*
-ADD ./files/000-default.conf /etc/apache2/sites-available/000-default.conf
-RUN a2ensite 000-default ; a2enmod rewrite vhost_alias
+#Xdebug
 ADD ./files/xdebug.ini /etc/php5/mods-available/xdebug.ini
 
 # Display version information
